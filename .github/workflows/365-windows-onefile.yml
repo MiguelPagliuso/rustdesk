@@ -35,16 +35,12 @@ jobs:
           exe='365-Suporte-Remoto-licensed-=0nI9E1axEFSWRjYYRTRxEUUPNmVsZWSURFWzcTYzpFZBFGUJBjTaBTMzkTW58kI6ISeltmIsIiI6ISawFmIsIyNxETMyoDdl5mLz5GZk5CdzVnc1YzMiojI5FGblJnIsICdl5mLz5GZk5CdzVnc1YzMiojI0N3boJye.exe'
           mv rustdesk.exe "$exe"
           test -s "$exe"
-          printf '%s\\n' "$exe" > FILENAME.txt
-          sha256sum "$exe" > SHA256SUMS.txt
+          sha256sum "$exe"
 
       - name: Publicar executavel unico para teste
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: 365-Suporte-Remoto-Windows64-TESTE
-          path: |
-            *.exe
-            FILENAME.txt
-            SHA256SUMS.txt
+          path: '*.exe'
           retention-days: 7
           if-no-files-found: error
