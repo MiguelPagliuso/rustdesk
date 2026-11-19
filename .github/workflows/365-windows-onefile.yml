@@ -31,8 +31,8 @@ jobs:
         run: |
           set -euo pipefail
           # RustDesk OSS Windows 1.5.3 reads host, key and relay from
-          # the executable file name. No wrapper or second program required.
-          exe='365-Suporte-Remoto-host=365rust.ddns.net,key=O9Y9310ZN0IPaAdZsa73XTTIflVcOQA1E4Xb4VHQ1kQ=,relay=365rust.ddns.net:21117,.exe'
+          # the executable file name via the official exported reversed config token.\n          # This avoids invalid Windows filename characters such as a colon.\n          # No wrapper or second program required.
+          exe='365-Suporte-Remoto-licensed-=0nI9E1axEFSWRjYYRTRxEUUPNmVsZWSURFWzcTYzpFZBFGUJBjTaBTMzkTW58kI6ISeltmIsIiI6ISawFmIsIyNxETMyoDdl5mLz5GZk5CdzVnc1YzMiojI5FGblJnIsICdl5mLz5GZk5CdzVnc1YzMiojI0N3boJye.exe'
           mv rustdesk.exe "$exe"
           test -s "$exe"
           printf '%s\\n' "$exe" > FILENAME.txt
