@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../common.dart';
+import '../models/platform_model.dart';
 
 /// Provision the 365 Tecnologia rendezvous server on a fresh Android client.
 /// A server already configured by the user is never overwritten.
