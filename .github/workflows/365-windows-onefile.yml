@@ -1,0 +1,50 @@
+name: 365 Suporte Remoto - Windows single EXE (teste)
+
+on:
+  push:
+    branches:
+      - feature/365-windows-onefile
+    paths:
+      - .github/workflows/365-windows-onefile.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-portable:
+    name: Preparar executavel Windows 64-bit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download RustDesk oficial 1.5.3 e validar SHA256
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output rustdesk.exe \
+            https://github.com/rustdesk/rustdesk/releases/download/1.5.3/rustdesk-1.5.3-x86_64.exe
+          echo '523ba0efbf62a21739961b62c7daaffb44d3da86139c546b364fd4e1333ed249  rustdesk.exe' | sha256sum --check
+          test "$(stat -c%s rustdesk.exe)" -eq 26233712
+
+      - name: Adicionar parametros do servidor no nome do executavel
+        shell: bash
+        run: |
+          set -euo pipefail
+          # RustDesk OSS Windows 1.5.3 reads host, key and relay from
+          # the executable file name. No wrapper or second program required.
+          exe='365-Suporte-Remoto-host=365rust.ddns.net,key=O9Y9310ZN0IPaAdZsa73XTTIflVcOQA1E4Xb4VHQ1kQ=,relay=365rust.ddns.net:21117,.exe'
+          mv rustdesk.exe "$exe"
+          test -s "$exe"
+          printf '%s\\n' "$exe" > FILENAME.txt
+          sha256sum "$exe" > SHA256SUMS.txt
+
+      - name: Publicar executavel unico para teste
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: 365-Suporte-Remoto-Windows64-TESTE
+          path: |
+            *.exe
+            FILENAME.txt
+            SHA256SUMS.txt
+          retention-days: 7
+          if-no-files-found: error
